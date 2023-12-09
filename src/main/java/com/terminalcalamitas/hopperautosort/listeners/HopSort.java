@@ -6,6 +6,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 
@@ -35,6 +37,11 @@ public class HopSort implements Listener {
         });
     }
 
+    private boolean specialMatch(String filterString) {
+        String[] filter = filterString.split(",");
+        return (filter[1].equals("dougisgoodat2dplatformers|"));
+    }
+
     @EventHandler
     public void onInventoryMoveItemEvent(InventoryMoveItemEvent event) {
 
@@ -45,9 +52,25 @@ public class HopSort implements Listener {
             if(customName != null) {
 
                 String itemName = event.getItem().getType().getItemTranslationKey();
-                if(!filterMatch(customName, itemName)) {
+
+                if (specialMatch(customName)) {
+                    ItemStack heldItem = event.getItem();
+                    int amount;
+                    if (event.getDestination().getItem(2) == null) {
+                        amount = 0;
+                    } else {
+                        amount = event.getDestination().getItem(2).getAmount();
+                    }
+                    ItemStack moveItem;
+                    moveItem = new ItemStack(heldItem.getType(),amount + 1, heldItem.getDurability());
+                    moveItem.setItemMeta(heldItem.getItemMeta());
+
+
+                    event.getDestination().setItem(2, moveItem);
+                }else if(!filterMatch(customName, itemName)) {
                     event.setCancelled(true);
                 }
+
             }
 
         }
