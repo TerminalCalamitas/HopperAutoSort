@@ -2,3 +2,8 @@ name: HopperAutoSort
 version: '${project.version}'
 main: com.terminalcalamitas.hopperautosort.HopperAutoSort
 api-version: '1.20'
+commands:
+  hoppersort:
+    description: Explains what this plugin is for.
+    usage: /<command>
+    aliases: hopsort
