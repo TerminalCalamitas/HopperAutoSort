@@ -17,7 +17,7 @@ public class Commands implements CommandExecutor {
 
         if(command.getName().equalsIgnoreCase("hoppersort")) {
             player.sendMessage("Rename a hopper to a minecraft item. (example: \"diamond_sword\")\n" +
-                    "To sort multiple items with the hopper use a comme to separate them. (example: \"diamond_sword,grass_block\")\n" +
+                    "To sort multiple items with the hopper use a comma to separate them. (example: \"diamond_sword,grass_block\")\n" +
                     "If you put a * at the beginning of an item name any item that ends with the name will be let through. (example: \"*sand\"\n" +
                     "  would allow red_sand or sand through.\n" +
                     "The same follows for if you put the * at the end. (example: \"light_blue*\" would let any item starting with \"light_blue\")\n" +
