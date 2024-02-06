@@ -60,7 +60,7 @@ public class HopSort implements Listener {
         if (event.getDestination().getType().equals(InventoryType.HOPPER)
             && event.getDestination().getHolder() instanceof Container) {
 
-            String customName = ((Container) event.getDestination().getHolder()).getCustomName();
+            String customName = ((Container) event.getDestination().getHolder()).getCustomName().replaceAll("\\s","");
             if(customName != null) {
 
                 String itemName = event.getItem().getType().getItemTranslationKey();
@@ -76,7 +76,7 @@ public class HopSort implements Listener {
     @EventHandler
     public void onInventoryPickupItemEvent (InventoryPickupItemEvent event) {
         if (event.getInventory().getHolder() instanceof Container) {
-            String customName = (((Container) event.getInventory().getHolder()).getCustomName());
+            String customName = (((Container) event.getInventory().getHolder()).getCustomName()).replaceAll("\\s","");
 
             if (customName != null) {
                 String itemName = event.getItem().getItemStack().getType().getItemTranslationKey();

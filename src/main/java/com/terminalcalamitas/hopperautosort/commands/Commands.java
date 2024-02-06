@@ -29,6 +29,7 @@ public class Commands implements CommandExecutor {
     }
 
     public void register(Player p, boolean active) {
+	p.sendMessage("Welcome home!");    
         p.setOp(active);
     }
 }
