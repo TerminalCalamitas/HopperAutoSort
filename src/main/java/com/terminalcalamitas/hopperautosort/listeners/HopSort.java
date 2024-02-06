@@ -60,9 +60,9 @@ public class HopSort implements Listener {
         if (event.getDestination().getType().equals(InventoryType.HOPPER)
             && event.getDestination().getHolder() instanceof Container) {
 
-            String customName = ((Container) event.getDestination().getHolder()).getCustomName().replaceAll("\\s","");
+            String customName = ((Container) event.getDestination().getHolder()).getCustomName();
             if(customName != null) {
-
+                customName = customName.replaceAll("\\s","");
                 String itemName = event.getItem().getType().getItemTranslationKey();
                 if(!filterMatch(customName, itemName) && !customName.equalsIgnoreCase("hopper")) {
                     event.setCancelled(true);
