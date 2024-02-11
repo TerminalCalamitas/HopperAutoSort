@@ -19,7 +19,7 @@ public class HopSort implements Listener {
     /*
      * A basic description of how the plugin works.
      * Rename a hopper to a minecraft item. (example: "diamond_sword")
-     * To sort multiple items with the hopper use a comme to separate them. (example: "diamond_sword,grass_block")
+     * To sort multiple items with the hopper use a comma to separate them. (example: "diamond_sword,grass_block")
      * If you put a * at the beginning of an item name any item that ends with the name will be let through. (example: "*sand"
      *   would allow red_sand or sand through.
      * The same follows for if you put the * at the end. (example: "light_blue*" would let any item starting with "light_blue")
@@ -76,9 +76,10 @@ public class HopSort implements Listener {
     @EventHandler
     public void onInventoryPickupItemEvent (InventoryPickupItemEvent event) {
         if (event.getInventory().getHolder() instanceof Container) {
-            String customName = (((Container) event.getInventory().getHolder()).getCustomName()).replaceAll("\\s","");
+            String customName = (((Container) event.getInventory().getHolder()).getCustomName());
 
             if (customName != null) {
+                customName = customName.replaceAll("\\s","");
                 String itemName = event.getItem().getItemStack().getType().getItemTranslationKey();
                 if(!filterMatch(customName, itemName)) {
                     event.setCancelled(true);
